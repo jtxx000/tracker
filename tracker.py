@@ -10,6 +10,7 @@ camera = Camera.alloc().init()
 
 @rumps.timer(5)
 def capture_camera(sender):
+    print 'camera'
     camera.capture('/tmp/camera.jpg')
 
 @rumps.timer(5)

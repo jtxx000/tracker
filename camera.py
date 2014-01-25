@@ -56,6 +56,10 @@ class Camera(NSObject):
     def captureOutput_didOutputVideoFrame_withSampleBuffer_fromConnection_(self, captureOutput, 
                                                                            videoFrame, sampleBuffer, 
                                                                            connection):
+        print 'tick'
+        self.count -= 1
+        if self.count >= 0: return
+
         self.running = False
         self.session.stopRunning() # I just want one frame
 
@@ -82,11 +86,10 @@ class Camera(NSObject):
         # have to worry with locks
 
         if self.running: return True
-
-        self.output_path = output_path
-
         self.running = True
+        self.output_path = output_path
         self.session.startRunning()
+        self.count = 5
 
 #     def main(self):
 #         # Turn on the camera and start the capture
