@@ -8,6 +8,7 @@
 # take a single frame capture using the built-in iSight camera and save it to disk
 # using three methods.
 #
+# Adapted by Caleb Reach
 
 import sys
 import os
