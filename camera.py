@@ -56,7 +56,6 @@ class Camera(NSObject):
     def captureOutput_didOutputVideoFrame_withSampleBuffer_fromConnection_(self, captureOutput, 
                                                                            videoFrame, sampleBuffer, 
                                                                            connection):
-        print 'tick'
         self.count -= 1
         if self.count >= 0: return
 
@@ -67,15 +66,14 @@ class Camera(NSObject):
         ciimage = CIImage.imageWithCVImageBuffer_(videoFrame)
         # rep = NSCIImageRep.imageRepWithCIImage_(ciimage)
         bitrep = NSBitmapImageRep.alloc().initWithCIImage_(ciimage)
-        bitdata = bitrep.representationUsingType_properties_(NSJPEGFileType, NSDictionary.dictionary())
+        bitdata = bitrep.representationUsingType_properties_(self.output_type, NSDictionary.dictionary())
 
         # Save image to disk using Cocoa
         bitdata.writeToFile_atomically_(self.output_path, False)
-        print 'frame'
 
         # Will exit on next execution of quitMainLoop_()
 
-    def capture(self, output_path):
+    def capture(self, output_path, output_type):
         """
         Captures an image from the camera and saves it to the given output_path.
 
@@ -88,6 +86,7 @@ class Camera(NSObject):
         if self.running: return True
         self.running = True
         self.output_path = output_path
+        self.output_type = output_type
         self.session.startRunning()
         self.count = 5
 

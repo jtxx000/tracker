@@ -2,6 +2,7 @@ import rumps
 import sys
 from PyQt4.QtGui import QPixmap, QApplication
 import QTKit
+from AppKit import NSJPEGFileType
 from camera import Camera
 
 app = QApplication(sys.argv)
@@ -10,8 +11,7 @@ camera = Camera.alloc().init()
 
 @rumps.timer(5)
 def capture_camera(sender):
-    print 'camera'
-    camera.capture('/tmp/camera.jpg')
+    camera.capture('/tmp/camera.jpg', NSJPEGFileType)
 
 @rumps.timer(5)
 def capture_desktop(sender):
