@@ -36,7 +36,6 @@ class Camera(NSObject):
 
         # Find iSight device and open it
         dev = QTKit.QTCaptureDevice.defaultInputDeviceWithMediaType_(QTKit.QTMediaTypeVideo)
-        # print "Device: %s" % dev
         if not dev.open_(error):
             raise RuntimeError("Couldn't open capture device.")
 
@@ -65,14 +64,11 @@ class Camera(NSObject):
 
         # Get a bitmap representation of the frame using CoreImage and Cocoa calls
         ciimage = CIImage.imageWithCVImageBuffer_(videoFrame)
-        # rep = NSCIImageRep.imageRepWithCIImage_(ciimage)
         bitrep = NSBitmapImageRep.alloc().initWithCIImage_(ciimage)
         bitdata = bitrep.representationUsingType_properties_(self.output_type, NSDictionary.dictionary())
 
         # Save image to disk using Cocoa
         bitdata.writeToFile_atomically_(self.output_path, False)
-
-        # Will exit on next execution of quitMainLoop_()
 
     def capture(self, output_path, output_type):
         """
@@ -90,16 +86,3 @@ class Camera(NSObject):
         self.output_type = output_type
         self.session.startRunning()
         self.count = 5
-
-#     def main(self):
-#         # Turn on the camera and start the capture
-#         self.startImageCapture()
-
-#         # Start Cocoa's main event loop
-#         AppHelper.runConsoleEventLoop(installInterrupt=True)
-
-#         print "Frame capture completed."
-
-# if __name__ == "__main__":
-#     test = NSImageTest.alloc().init()
-#     test.main()
